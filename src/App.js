@@ -1,23 +1,36 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+  const boxes = ["yellow", "blue", "red", "green"];
+  const [ computerOrder, setComputerOrder ] = useState([]);
+  const [ playerOrder, setPlayerOrder ] = useState([]);
+
+
+  const handleBlink=(event)=>{
+    event.target.style.opacity = 1;
+    setTimeout(()=>{
+      event.target.style.opacity = .5;
+    }, 333)
+  }
+
+  const handleClickBox=(boxIndex, e)=>{
+    handleBlink(e);
+  }
+
+  let boxesElArr = boxes.map((color, index)=>{
+    return (
+      <div 
+        key={index}
+        onClick={(e)=>handleClickBox(index, e)} 
+        style={{ backgroundColor: color }} 
+        className= {"box"}
+      ></div>
+    )
+  })
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="boxes-container">
+      { boxesElArr }
     </div>
   );
 }
