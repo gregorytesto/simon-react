@@ -1,21 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
   const boxes = ["yellow", "blue", "red", "green"];
-  const [ computerOrder, setComputerOrder ] = useState([]);
-  const [ playerOrder, setPlayerOrder ] = useState([]);
+  const [ computerOrder, setComputerOrder ] = useState([ 3, 0, 1, 2 ]);
+  // const [ playerOrder, setPlayerOrder ] = useState([]);
+  const [ selectedBox, setSelectedBox ] = useState(null);
 
+  const handleAddRandomBox=()=>{
+    let randomIndex = Math.floor(Math.random()*4);
+    setComputerOrder([ ...computerOrder,  randomIndex]);
+  }
 
-  const handleBlink=(event)=>{
-    event.target.style.opacity = 1;
+  const showComputerOrder=()=>{
+
+    for(let i=0;i<computerOrder.length; i++){
+      setTimeout(()=>{
+        handleBlink(computerOrder[i]);
+      }, 500*(i+1));
+    }
+
+  }
+
+  useEffect(()=>{
+    showComputerOrder();
+  }, []);
+
+  const handleBlink=(index)=>{
+    setSelectedBox(index);
     setTimeout(()=>{
-      event.target.style.opacity = .5;
+      setSelectedBox(null);
     }, 333)
   }
 
   const handleClickBox=(boxIndex, e)=>{
-    handleBlink(e);
+    // handleBlink(boxIndex);
+    // handleAddRandomBox();
   }
 
   let boxesElArr = boxes.map((color, index)=>{
@@ -23,7 +43,8 @@ function App() {
       <div 
         key={index}
         onClick={(e)=>handleClickBox(index, e)} 
-        style={{ backgroundColor: color }} 
+        style={{ backgroundColor: color, opacity: selectedBox === index ? 1: .5 }} 
+        id={"box-"+index}
         className= {"box"}
       ></div>
     )
