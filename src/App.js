@@ -72,10 +72,11 @@ function App() {
   })
   return (
     <div id="boxes-container">
-      { !isGameOver && boxesElArr }
-      { isGameOver &&
+      { isGameOver ? (
         <h1>GGggggrrr... Game over</h1>
-      }
+      ) : (
+        boxesElArr
+      ) }
       <button onClick={handleStartGame}>Start</button>
     </div>
   );
