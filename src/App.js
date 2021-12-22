@@ -57,6 +57,7 @@ function App() {
   let handleStartGame=()=>{
     let initialOrder = [ 3 ];
     setComputerOrder(initialOrder);
+    setIsGameOver(false);
     showPattern(initialOrder);
   }
 
@@ -77,7 +78,7 @@ function App() {
       ) : (
         boxesElArr
       ) }
-      <button onClick={handleStartGame}>Start</button>
+      <button onClick={handleStartGame}>{ isGameOver ? "Restart" : "Start" }</button>
     </div>
   );
 }
