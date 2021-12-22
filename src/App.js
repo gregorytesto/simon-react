@@ -8,23 +8,18 @@ function App() {
   const [ selectedBox, setSelectedBox ] = useState(null);
   const [ isGameOver, setIsGameOver ] = useState(false);
 
-  const handleAddRandomBox=()=>{
-    let randomIndex = Math.floor(Math.random()*4);
-    setComputerOrder([ ...computerOrder,  randomIndex]);
-  }
+  const showPattern=(pattern)=>{
 
-  const showComputerOrder=()=>{
-
-    for(let i=0;i<computerOrder.length; i++){
+    for(let i=0;i<pattern.length; i++){
       setTimeout(()=>{
-        handleBlink(computerOrder[i]);
+        handleBlink(pattern[i]);
       }, 500*(i+1));
     }
 
   }
 
   useEffect(()=>{
-    showComputerOrder();
+    showPattern(computerOrder);
   }, []);
 
   const handleBlink=(index)=>{
@@ -36,8 +31,6 @@ function App() {
 
   const handleClickBox=(boxIndex)=>{
     handleBlink(boxIndex);
-    // [ 2, 3, 1, 0] // Comp
-    // [ 2, 3, 0 ] // Player
     let isCorrectOrder = true;
     let newPlayerOrder = [ ...playerOrder, boxIndex];
     
@@ -46,15 +39,19 @@ function App() {
         isCorrectOrder = false;
       }
     }
+
     if(!isCorrectOrder){
       setIsGameOver(true);
       return;
-    } else {
-
+    }
+    if( newPlayerOrder.length === computerOrder.length ){
+      newPlayerOrder= [];
+      let randomIndex = Math.floor(Math.random()*4);
+      let newComputerOrder = [ ...computerOrder,  randomIndex ];
+      setComputerOrder(newComputerOrder);
+      showPattern(newComputerOrder);
     }
     setPlayerOrder(newPlayerOrder);
-    // handleBlink(boxIndex);
-    // handleAddRandomBox();
   }
 
   let boxesElArr = boxes.map((color, index)=>{
