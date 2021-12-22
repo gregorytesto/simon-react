@@ -3,30 +3,30 @@ import './App.css';
 
 function App() {
   const boxes = ["yellow", "blue", "red", "green"];
-  const [ computerOrder, setComputerOrder ] = useState([ 3 ]);
+  const [ computerOrder, setComputerOrder ] = useState([]);
   const [ playerOrder, setPlayerOrder ] = useState([]);
   const [ selectedBox, setSelectedBox ] = useState(null);
   const [ isGameOver, setIsGameOver ] = useState(false);
 
-  const showPattern=(pattern)=>{
+  const showPattern=(pattern, miliSecs=500)=>{
 
     for(let i=0;i<pattern.length; i++){
       setTimeout(()=>{
         handleBlink(pattern[i]);
-      }, 500*(i+1));
+      }, miliSecs*(i+1));
     }
 
   }
 
   useEffect(()=>{
-    showPattern(computerOrder);
+    showPattern([ 0, 1, 3, 2, 0, 1, 3, 2 ], 175);
   }, []);
 
-  const handleBlink=(index)=>{
+  const handleBlink=(index, miliSecs=333)=>{
     setSelectedBox(index);
     setTimeout(()=>{
       setSelectedBox(null);
-    }, 333)
+    }, miliSecs)
   }
 
   const handleClickBox=(boxIndex)=>{
@@ -54,6 +54,12 @@ function App() {
     setPlayerOrder(newPlayerOrder);
   }
 
+  let handleStartGame=()=>{
+    let initialOrder = [ 3 ];
+    setComputerOrder(initialOrder);
+    showPattern(initialOrder);
+  }
+
   let boxesElArr = boxes.map((color, index)=>{
     return (
       <div 
@@ -70,6 +76,7 @@ function App() {
       { isGameOver &&
         <h1>GGggggrrr... Game over</h1>
       }
+      <button onClick={handleStartGame}>Start</button>
     </div>
   );
 }
