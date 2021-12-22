@@ -3,9 +3,10 @@ import './App.css';
 
 function App() {
   const boxes = ["yellow", "blue", "red", "green"];
-  const [ computerOrder, setComputerOrder ] = useState([ 3, 0, 1, 2 ]);
-  // const [ playerOrder, setPlayerOrder ] = useState([]);
+  const [ computerOrder, setComputerOrder ] = useState([ 3 ]);
+  const [ playerOrder, setPlayerOrder ] = useState([]);
   const [ selectedBox, setSelectedBox ] = useState(null);
+  const [ isGameOver, setIsGameOver ] = useState(false);
 
   const handleAddRandomBox=()=>{
     let randomIndex = Math.floor(Math.random()*4);
@@ -33,7 +34,25 @@ function App() {
     }, 333)
   }
 
-  const handleClickBox=(boxIndex, e)=>{
+  const handleClickBox=(boxIndex)=>{
+    handleBlink(boxIndex);
+    // [ 2, 3, 1, 0] // Comp
+    // [ 2, 3, 0 ] // Player
+    let isCorrectOrder = true;
+    let newPlayerOrder = [ ...playerOrder, boxIndex];
+    
+    for(let i=0;i<newPlayerOrder.length;i++){
+      if(newPlayerOrder[i] !== computerOrder[i]){
+        isCorrectOrder = false;
+      }
+    }
+    if(!isCorrectOrder){
+      setIsGameOver(true);
+      return;
+    } else {
+
+    }
+    setPlayerOrder(newPlayerOrder);
     // handleBlink(boxIndex);
     // handleAddRandomBox();
   }
@@ -42,16 +61,18 @@ function App() {
     return (
       <div 
         key={index}
-        onClick={(e)=>handleClickBox(index, e)} 
+        onClick={()=>handleClickBox(index)} 
         style={{ backgroundColor: color, opacity: selectedBox === index ? 1: .5 }} 
-        id={"box-"+index}
         className= {"box"}
       ></div>
     )
   })
   return (
     <div id="boxes-container">
-      { boxesElArr }
+      { !isGameOver && boxesElArr }
+      { isGameOver &&
+        <h1>GGggggrrr... Game over</h1>
+      }
     </div>
   );
 }

@@ -1,3 +1,6 @@
+body{
+  background-color: rgb(36, 36, 36);
+}
 #boxes-container{
   display: grid;
   grid-template-columns: 1fr 1fr;
